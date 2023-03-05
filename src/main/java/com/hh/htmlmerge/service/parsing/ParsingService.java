@@ -21,10 +21,10 @@ public class ParsingService {
     private final CrawlingService crawlingService;
 
     // Caffeine Local 캐싱 라이브러를 활용하여 응답 데이터를 캐싱
-    //@Cacheable( cacheNames = "MergeAndParseData", cacheManager = "caffeineCacheManager")
+    @Cacheable( cacheNames = "MergeAndParseData", cacheManager = "caffeineCacheManager")
     public String getMergeAndParsingData() {
         StringBuffer sb = crawlingService.crawlingSites();
-        // 머진된 문자열에서 영문과 숫자만 남김
+        // 머지된 문자열에서 영문과 숫자만 남김
         return parsingAndSortingData( sb.toString().replaceAll("[^a-zA-Z0-9]", "") );
     }
 
