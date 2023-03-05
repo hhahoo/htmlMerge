@@ -1,0 +1,14 @@
+# Tomcat 서버세팅은 Default 값으로 세팅
+server:
+  tomcat:
+    accept-count: 100
+    threads:
+      max: 200
+      min-spare: 10
+
+# 크롤링 대상 사이트 리스트
+target:
+    siteList: 
+        https://shop.hyundai.com,
+        https://www.kia.com,
+        https://www.genesis.com
