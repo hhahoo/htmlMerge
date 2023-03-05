@@ -10,6 +10,7 @@ import com.hh.htmlmerge.service.crawling.CrawlingService;
 
 import lombok.RequiredArgsConstructor;
 
+/** 머지된 문자열을 규칙에 맞게 파싱하기위한 서비스 */
 @Service
 @RequiredArgsConstructor
 public class ParsingService {
@@ -19,9 +20,11 @@ public class ParsingService {
 
     private final CrawlingService crawlingService;
 
-    @Cacheable( cacheNames = "MergeAndParseData", cacheManager = "caffeineCacheManager")
+    // Caffeine Local 캐싱 라이브러를 활용하여 응답 데이터를 캐싱
+    //@Cacheable( cacheNames = "MergeAndParseData", cacheManager = "caffeineCacheManager")
     public String getMergeAndParsingData() {
         StringBuffer sb = crawlingService.crawlingSites();
+        // 머진된 문자열에서 영문과 숫자만 남김
         return parsingAndSortingData( sb.toString().replaceAll("[^a-zA-Z0-9]", "") );
     }
 
@@ -30,6 +33,8 @@ public class ParsingService {
 
         ArrayDeque<String> alphabetQ = new ArrayDeque<>();
 
+        // 성능을 위해, A~Z까지 반복문을 돌며, 머지된 문자열에 각 알파벳(대문자,소문자)이 포함되어 있을 경우 Queue에 Add
+        // 사용된 대문자+소문자 쌍으로 최종 정렬이 되어야 하므로 Queue에 사용된 대소문자 쌍으로 Add (ex: Aa, B, c)
         boolean isUseUpper, isUseLower;
         for(char ch : AlphabetArr){
             isUseUpper = false; isUseLower= false;
@@ -44,9 +49,12 @@ public class ParsingService {
             }
         }
 
+        // 0~9까지 반복문을 돌며, 머지된 문자열에 각 숫자가 포함되어 있을 경우 숫자Queue에 Add
         ArrayDeque<Character> numberQ = new ArrayDeque<>();
         NumberArr.stream().filter( c -> str.indexOf(c) > -1).forEach( c -> numberQ.add(c));
     
+        // 예시와 같이, 대문자+소문자+숫자 형태로 쌍을 이뤄서 교차 출력이 되어야 하므로 영문큐, 숫자큐에서 교차로 빼서 결과에 Append
+        // ex: 영문큐[Aa, B, C, Dd, e], 숫자큐[1, 2, 4] -> [Aa1, B2, C4, De, e]
         while(!alphabetQ.isEmpty() || !numberQ.isEmpty()){
             if(!alphabetQ.isEmpty()) sb.append(alphabetQ.poll());
             if(!numberQ.isEmpty()) sb.append(numberQ.poll());

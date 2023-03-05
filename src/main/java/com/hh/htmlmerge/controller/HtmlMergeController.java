@@ -14,6 +14,7 @@ import com.hh.htmlmerge.service.parsing.ParsingService;
 
 import lombok.RequiredArgsConstructor;
 
+/** HtmlMerge API Request 및 Response 처리를 위한 Rest Controller */
 @RestController
 @RequiredArgsConstructor
 public class HtmlMergeController {

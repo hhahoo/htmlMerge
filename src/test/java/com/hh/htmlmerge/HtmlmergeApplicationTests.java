@@ -67,6 +67,21 @@ class HtmlmergeApplicationTests {
 	}
 
 	@Test
+	@DisplayName("파싱 및 교차출력 메소드가 여러 예제에서 정상동작 하는지 확인")
+	void checkParsingAndSortingDataOther() throws IOException {
+
+		// 숫자가 남아있는 경우
+		String result = ReflectionTestUtils.invokeMethod(parsingService, "parsingAndSortingData", "ABC123a456c789de0");
+		assertEquals("Aa0B1Cc2d3e456789", result);
+		// 문자만 있는 경우
+		result = ReflectionTestUtils.invokeMethod(parsingService, "parsingAndSortingData", "ffBBAADDCChhjjggee");
+		assertEquals("ABCDefghj", result);
+		// 숫자만 있는 경우
+		result = ReflectionTestUtils.invokeMethod(parsingService, "parsingAndSortingData", "987654321");
+		assertEquals("123456789", result);
+	}
+
+	@Test
 	@DisplayName("Timeout 상황이 발생하였을 경우, 2번 Retry 후 타임아웃일 경우 \"\"값을 리턴")
 	void checkCrawilngJsoupRetry() throws Exception {
 
