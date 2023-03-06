@@ -23,9 +23,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 
 import com.hh.htmlmerge.controller.HtmlMergeController;
+import com.hh.htmlmerge.service.MergeDataParsingServiceImpl;
 import com.hh.htmlmerge.service.crawling.CrawlingService;
 import com.hh.htmlmerge.service.crawling.CrawlingTaskService;
-import com.hh.htmlmerge.service.parsing.ParsingService;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -43,7 +43,7 @@ class HtmlmergeApplicationTests {
 	private CrawlingTaskService crawlingTaskService;
 
 	@Autowired
-	private ParsingService parsingService;
+	private MergeDataParsingServiceImpl parsingService;
 
 
 	@Test

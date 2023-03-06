@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hh.htmlmerge.dto.HtmlMergeResponseDTO;
-import com.hh.htmlmerge.service.parsing.ParsingService;
+import com.hh.htmlmerge.service.MergeDataParsingService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,17 +19,18 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class HtmlMergeController {
 
-    private final ParsingService parsingService;
+    private final MergeDataParsingService crawlingAndParsingService;
 
     @GetMapping("/get/htmlmerge")
     public ResponseEntity<HtmlMergeResponseDTO> getHtmlMergeResult() {
 
         return new ResponseEntity<>(
-            new HtmlMergeResponseDTO( HttpStatus.OK.value(), parsingService.getMergeAndParsingData() ), 
+            new HtmlMergeResponseDTO( HttpStatus.OK.value(), crawlingAndParsingService.getCrawlingAndParsingData() ), 
             getHeader(), HttpStatus.OK
         );
     }
 
+    // 공통 Header 세팅을 위한 메서드
     private HttpHeaders getHeader() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));

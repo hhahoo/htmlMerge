@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.hh.htmlmerge.common.dto.CommonErrorResponseDTO;
+import com.hh.htmlmerge.common.exception.NoCrawlingDataException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,6 +18,14 @@ import lombok.extern.slf4j.Slf4j;
 @RestControllerAdvice
 @Slf4j
 public class CommonExceptionHandler {
+
+    // 모든 크롤링 결과가 Null일 경우 발생하는 커스텀 Exception
+    @ExceptionHandler(NoCrawlingDataException.class)
+    public ResponseEntity<CommonErrorResponseDTO> NoCrawlingDataException(Exception e){
+        log.error("[ERROR - NoCrawlingDataException] " + e.getMessage());
+        return new ResponseEntity<>( new CommonErrorResponseDTO( HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage() )
+            , getHeader(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<CommonErrorResponseDTO> HandleException(Exception e){

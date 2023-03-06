@@ -18,10 +18,12 @@ public class CrawlingTaskService {
 
     @Async("crawlingTaskExecutor")
     public CompletableFuture<String> crawlingTask(String url){
+        log.info("[crawlingTask][" + url + "][" + Thread.currentThread().getName() + "] Connection Start ");
+
 
         Document doc = null;
-        // 최초 실행 시 Timeout은 5초로 설정하고, Retry 시 10초로 변경하여 2번 Try 함
-        int timeoutVlaue = 5000;
+        // 최초 실행 시 Timeout은 3초로 설정하고, Retry 시 7초로 변경하여 2번 Try 함
+        int timeoutVlaue = 3000;
 
         for(int i=1; i<=2; i++){
 
@@ -38,7 +40,7 @@ public class CrawlingTaskService {
                 if(i==2) {
                     log.error("[crawlingTask][" + url + "][" + Thread.currentThread().getName() + "] Connection Error (" + e.getLocalizedMessage() + ")" );
                 } else {
-                timeoutVlaue = 10000;
+                timeoutVlaue = 7000;
                 log.warn("[crawlingTask][" + url + "][" + Thread.currentThread().getName() + "] Timeout Occured" );
                 }
             } catch (IOException e) {
