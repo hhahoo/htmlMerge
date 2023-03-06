@@ -39,7 +39,7 @@ public class CrawlingService {
                          ).join();
         
         // 모든 사이트의 크롤링 결과가 Null일 경우 커스텀Exception 발생
-        if( sb.isEmpty() ) throw new NoCrawlingDataException();
+        if( sb == null || sb.length() == 0 ) throw new NoCrawlingDataException();
 
         log.info("[crawlingSites] MergeData Size : " + sb.length());
         return sb;
